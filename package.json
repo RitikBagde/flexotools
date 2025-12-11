@@ -9,19 +9,46 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@huggingface/inference": "^4.13.4",
+    "@mlc-ai/web-llm": "^0.2.80",
+    "@sentry/nextjs": "^10.29.0",
+    "@supabase/auth-helpers-nextjs": "^0.15.0",
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.86.2",
+    "autoprefixer": "^10.4.22",
+    "docx": "^9.5.1",
+    "file-saver": "^2.0.5",
+    "formidable": "^3.5.4",
+    "lucide-react": "^0.556.0",
     "next": "16.0.7",
+    "next-pwa": "^5.6.0",
+    "pdf-lib": "^1.17.1",
+    "pdf-parse-fork": "^1.2.0",
+    "pdf2json": "^4.0.0",
+    "postcss": "^8.5.6",
+    "qr-code-styling": "^1.9.2",
+    "qr-scanner": "^1.4.2",
+    "qrcode.react": "^4.2.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-barcode": "^1.6.1",
+    "react-dom": "19.2.0",
+    "resend": "^6.5.2",
+    "sharp": "^0.34.5",
+    "stripe": "^20.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/file-saver": "^2.0.7",
+    "@types/formidable": "^3.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.17",
     "typescript": "^5"
   }
 }

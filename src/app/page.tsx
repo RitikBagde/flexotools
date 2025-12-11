@@ -1,65 +1,230 @@
-import Image from "next/image";
+// src/app/page.tsx
+import Link from 'next/link';
 
 export default function Home() {
+  const tools = [
+    {
+      href: '/tools/image-compressor',
+      title: 'Image Compressor',
+      description: 'Reduce image file sizes without losing quality',
+      icon: '🖼️',
+      gradient: 'from-purple-500 to-pink-500',
+      stats: 'Up to 80% smaller',
+    },
+    {
+      href: '/tools/pdf-text',
+      title: 'PDF Text Extract',
+      description: 'Extract text and data from PDF documents',
+      icon: '📄',
+      gradient: 'from-blue-500 to-cyan-500',
+      stats: 'Swift Extract',
+    },
+    {
+      href: '/tools/qr-generator',
+      title: 'QR Generator',
+      description: 'Create custom QR codes and Barcodes in seconds',
+      icon: '📱',
+      gradient: 'from-green-500 to-emerald-500',
+      stats: 'Unlimited codes',
+    },
+    {
+      href: '/tools/resume-grader',
+      title: 'Resume ATS Scorer',
+      description: 'AI-powered resume analysis and feedback',
+      icon: '📋',
+      gradient: 'from-orange-500 to-red-500',
+      stats: 'Smart AI',
+    },
+    {
+      href: '/tools/text-summarizer',
+      title: 'Text Summarizer/Title Generator',
+      description: 'Summarize long texts instantly',
+      icon: '✨',
+      gradient: 'from-violet-500 to-purple-500',
+      stats: 'AI-powered',
+    },
+    {
+      href: '#',
+      title: 'More Tools',
+      description: 'Additional tools are in development',
+      icon: '🚀',
+      gradient: 'from-gray-500 to-slate-500',
+      stats: 'Stay tuned',
+    },
+  ];
+
+  const features = [
+    { icon: '⚡', title: 'Lightning Fast', description: 'Optimized for speed and performance' },
+    { icon: '🔒', title: 'Privacy First', description: 'Your data never leaves your browser' },
+    { icon: '🎯', title: 'Optional Signup', description: 'Only create an account for advanced tools' },
+    { icon: '💎', title: 'Premium Quality', description: 'Professional-grade results' },
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="space-y-20">
+      {/* Hero Section */}
+      <section className="text-center space-y-6 py-12">
+        <div className="inline-block">
+          <span className="px-4 py-1.5 rounded-full bg-linear-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 text-sm font-medium text-foreground/80">
+            ✨ Your All-in-One Toolkit
+          </span>
+        </div>
+        
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+          <span className="bg-linear-to-r from-purple-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+            Powerful Tools
+          </span>
+          <br />
+          <span className="text-foreground">for Your Workflow</span>
+        </h1>
+        
+        <p className="text-xl text-foreground/60 max-w-2xl mx-auto leading-relaxed">
+          Fast, efficient, and privacy-focused tools for image compression, PDF extraction, 
+          QR generation, and more. No signup required.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <a
+            href="#tools"
+            className="px-8 py-3 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200"
+          >
+            Explore Tools
+          </a>
+          <a
+            href="#features"
+            className="px-8 py-3 bg-foreground/5 hover:bg-foreground/10 text-foreground rounded-xl font-medium transition-all duration-200"
+          >
+            Learn More
+          </a>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12">
+          <div className="space-y-1">
+            <div className="text-3xl font-bold bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+              10K+
+            </div>
+            <div className="text-sm text-foreground/60">Active Users</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-3xl font-bold bg-linear-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+              50K+
+            </div>
+            <div className="text-sm text-foreground/60">Files Processed</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-3xl font-bold bg-linear-to-r from-cyan-500 to-green-500 bg-clip-text text-transparent">
+              100%
+            </div>
+            <div className="text-sm text-foreground/60">Privacy Safe</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tools Grid */}
+      <section id="tools" className="space-y-8">
+        <div className="text-center space-y-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            Choose Your Tool
+          </h2>
+          <p className="text-foreground/60">
+            Select from our collection of powerful utilities
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tools.map((tool, index) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="group relative"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="relative h-full p-6 rounded-2xl border border-foreground/10 bg-background/50 backdrop-blur-sm hover:border-foreground/20 hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-300 hover:-translate-y-1">
+                {/* Gradient Overlay */}
+                <div className={`absolute inset-0 rounded-2xl bg-linear-to-br ${tool.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                
+                {/* Content */}
+                <div className="relative space-y-4">
+                  {/* Icon */}
+                  <div className="flex items-center justify-between">
+                    <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${tool.gradient} flex items-center justify-center text-2xl shadow-lg`}>
+                      {tool.icon}
+                    </div>
+                    <span className="text-xs font-medium text-foreground/40 group-hover:text-foreground/60 transition-colors">
+                      {tool.stats}
+                    </span>
+                  </div>
+                  
+                  {/* Text */}
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-foreground group-hover:text-transparent group-hover:bg-linear-to-r group-hover:bg-clip-text group-hover:from-purple-500 group-hover:to-blue-500 transition-all">
+                      {tool.title}
+                    </h3>
+                    <p className="text-sm text-foreground/60 leading-relaxed">
+                      {tool.description}
+                    </p>
+                  </div>
+                  
+                  {/* Arrow */}
+                  <div className="flex items-center text-sm font-medium text-foreground/40 group-hover:text-foreground/80 transition-colors">
+                    <span>Try it now</span>
+                    <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
-      </main>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="space-y-8">
+        <div className="text-center space-y-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            Why Choose Us?
+          </h2>
+          <p className="text-foreground/60">
+            Built with performance and privacy in mind
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, index) => (
+            <div
+              key={feature.title}
+              className="p-6 rounded-xl bg-foreground/5 hover:bg-foreground/10 transition-all duration-300 space-y-3"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="text-3xl">{feature.icon}</div>
+              <h3 className="text-lg font-bold text-foreground">{feature.title}</h3>
+              <p className="text-sm text-foreground/60">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10 border border-foreground/10 p-12 text-center space-y-6">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-size-[32px_32px]"></div>
+        
+        <div className="relative space-y-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            Ready to Get Started?
+          </h2>
+          <p className="text-foreground/60 max-w-2xl mx-auto">
+            Join thousands of users who trust our tools for their workflow. 
+            No credit card required.
+          </p>
+          <a href="#tools">
+          <button className="px-8 py-3 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200">
+            Start Using Tools
+          </button>
+          </a>  
+        </div>
+      </section>
     </div>
   );
 }
