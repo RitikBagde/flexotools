@@ -507,9 +507,6 @@ function analyzeResume(text: string): ResumeAnalysis {
   // ========================================
   // REALISTIC SCORE CALIBRATION
   // ========================================
-  
-  // Apply stricter scoring curve to prevent grade inflation
-  // Target distribution:
   // Excellent resumes (truly outstanding): 75-85
   // Good resumes (above average): 60-74
   // Average resumes (solid): 50-59

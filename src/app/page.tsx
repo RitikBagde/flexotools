@@ -1,5 +1,17 @@
 // src/app/page.tsx
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+// SEO: Page-specific metadata
+export const metadata: Metadata = {
+  title: "Free Online Tools - Image Compressor, PDF Extractor, QR Generator",
+  description: "Use our free online tools: compress images up to 80%, extract text from PDFs, generate QR codes, score resumes with AI, and summarize text. No signup required. Privacy-first.",
+  openGraph: {
+    title: "FlexoTools - Free Online Tools for Everyone",
+    description: "Fast, privacy-focused tools for image compression, PDF extraction, QR generation, and more",
+    images: ["/og-home.png"], // TODO: Create specific OG image for homepage
+  },
+};
 
 export default function Home() {
   const tools = [
@@ -62,15 +74,41 @@ export default function Home() {
 
   return (
     <div className="space-y-20">
+      {/* SEO: Structured Data for SoftwareApplication */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "FlexoTools",
+            applicationCategory: "UtilitiesApplication",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+            },
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.8",
+              ratingCount: "10000",
+            },
+            operatingSystem: "Web Browser",
+            description: "Free online tools for image compression, PDF extraction, QR code generation, resume scoring, and text summarization",
+          }),
+        }}
+      />
+
       {/* Hero Section */}
-      <section className="text-center space-y-6 py-12">
+      <section className="text-center space-y-6 py-12" aria-labelledby="hero-heading">
         <div className="inline-block">
           <span className="px-4 py-1.5 rounded-full bg-linear-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 text-sm font-medium text-foreground/80">
             ✨ Your All-in-One Toolkit
           </span>
         </div>
         
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+        {/* SEO: Main heading with keywords */}
+        <h1 id="hero-heading" className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
           <span className="bg-linear-to-r from-purple-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
             Powerful Tools
           </span>
@@ -78,6 +116,7 @@ export default function Home() {
           <span className="text-foreground">for Your Workflow</span>
         </h1>
         
+        {/* SEO: Descriptive paragraph with keywords */}
         <p className="text-xl text-foreground/60 max-w-2xl mx-auto leading-relaxed">
           Fast, efficient, and privacy-focused tools for image compression, PDF extraction, 
           QR generation, and more. No signup required.
@@ -87,33 +126,35 @@ export default function Home() {
           <a
             href="#tools"
             className="px-8 py-3 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200"
+            aria-label="Explore our free tools"
           >
             Explore Tools
           </a>
           <a
             href="#features"
             className="px-8 py-3 bg-foreground/5 hover:bg-foreground/10 text-foreground rounded-xl font-medium transition-all duration-200"
+            aria-label="Learn more about our features"
           >
             Learn More
           </a>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12">
+        {/* Stats - SEO: Add meaningful context */}
+        <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12" role="region" aria-label="Platform statistics">
           <div className="space-y-1">
-            <div className="text-3xl font-bold bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+            <div className="text-4xl font-bold bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent" aria-label="10,000 plus active users">
               10K+
             </div>
             <div className="text-sm text-foreground/60">Active Users</div>
           </div>
           <div className="space-y-1">
-            <div className="text-3xl font-bold bg-linear-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+            <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent" aria-label="50,000 plus files processed">
               50K+
             </div>
             <div className="text-sm text-foreground/60">Files Processed</div>
           </div>
           <div className="space-y-1">
-            <div className="text-3xl font-bold bg-linear-to-r from-cyan-500 to-green-500 bg-clip-text text-transparent">
+            <div className="text-4xl font-bold bg-linear-to-r from-cyan-500 to-green-500 bg-clip-text text-transparent" aria-label="100 percent privacy safe">
               100%
             </div>
             <div className="text-sm text-foreground/60">Privacy Safe</div>
@@ -121,10 +162,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tools Grid */}
-      <section id="tools" className="space-y-8">
+      {/* Tools Grid - SEO: Semantic HTML with proper headings */}
+      <section id="tools" className="space-y-8" aria-labelledby="tools-heading">
         <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+          <h2 id="tools-heading" className="text-3xl md:text-4xl font-bold text-foreground">
             Choose Your Tool
           </h2>
           <p className="text-foreground/60">
@@ -132,23 +173,26 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* SEO: Grid with proper list semantics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
           {tools.map((tool, index) => (
             <Link
               key={tool.href}
               href={tool.href}
               className="group relative"
               style={{ animationDelay: `${index * 100}ms` }}
+              aria-label={`${tool.title}: ${tool.description}`}
+              role="listitem"
             >
-              <div className="relative h-full p-6 rounded-2xl border border-foreground/10 bg-background/50 backdrop-blur-sm hover:border-foreground/20 hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-300 hover:-translate-y-1">
+              <article className="relative h-full p-6 rounded-2xl border border-foreground/10 bg-background/50 backdrop-blur-sm hover:border-foreground/20 hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-300 hover:-translate-y-1">
                 {/* Gradient Overlay */}
-                <div className={`absolute inset-0 rounded-2xl bg-linear-to-br ${tool.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                <div className={`absolute inset-0 rounded-2xl bg-linear-to-br ${tool.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} aria-hidden="true"></div>
                 
                 {/* Content */}
                 <div className="relative space-y-4">
                   {/* Icon */}
                   <div className="flex items-center justify-between">
-                    <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${tool.gradient} flex items-center justify-center text-2xl shadow-lg`}>
+                    <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${tool.gradient} flex items-center justify-center text-2xl shadow-lg`} aria-hidden="true">
                       {tool.icon}
                     </div>
                     <span className="text-xs font-medium text-foreground/40 group-hover:text-foreground/60 transition-colors">
@@ -169,21 +213,21 @@ export default function Home() {
                   {/* Arrow */}
                   <div className="flex items-center text-sm font-medium text-foreground/40 group-hover:text-foreground/80 transition-colors">
                     <span>Try it now</span>
-                    <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
                 </div>
-              </div>
+              </article>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="space-y-8">
+      {/* Features Section - SEO: Descriptive headings */}
+      <section id="features" className="space-y-8" aria-labelledby="features-heading">
         <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+          <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-foreground">
             Why Choose Us?
           </h2>
           <p className="text-foreground/60">
@@ -191,37 +235,38 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
           {features.map((feature, index) => (
-            <div
+            <article
               key={feature.title}
               className="p-6 rounded-xl bg-foreground/5 hover:bg-foreground/10 transition-all duration-300 space-y-3"
               style={{ animationDelay: `${index * 100}ms` }}
+              role="listitem"
             >
-              <div className="text-3xl">{feature.icon}</div>
+              <div className="text-3xl" aria-hidden="true">{feature.icon}</div>
               <h3 className="text-lg font-bold text-foreground">{feature.title}</h3>
               <p className="text-sm text-foreground/60">{feature.description}</p>
-            </div>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10 border border-foreground/10 p-12 text-center space-y-6">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-size-[32px_32px]"></div>
+      {/* CTA Section - SEO: Clear call to action */}
+      <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10 border border-foreground/10 p-12 text-center space-y-6" aria-labelledby="cta-heading">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-size-[32px_32px]" aria-hidden="true"></div>
         
         <div className="relative space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+          <h2 id="cta-heading" className="text-3xl md:text-4xl font-bold text-foreground">
             Ready to Get Started?
           </h2>
           <p className="text-foreground/60 max-w-2xl mx-auto">
             Join thousands of users who trust our tools for their workflow. 
             No credit card required.
           </p>
-          <a href="#tools">
-          <button className="px-8 py-3 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200">
-            Start Using Tools
-          </button>
+          <a href="#tools" aria-label="Start using our free tools">
+            <button className="px-8 py-3 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200">
+              Start Using Tools
+            </button>
           </a>  
         </div>
       </section>

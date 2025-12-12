@@ -76,37 +76,38 @@ export default function SettingsPage() {
     }
   };
 
-  const simulateSave = async (fn: () => void) => {
-    // Small helper to centralize "saving" state logic
-    setSaveStatus('saving');
-    try {
-      // ⚠️ TODO: Replace this with a real API call when ready
-      // Example:
-      // await fetch('/api/user/preferences', { ... });
-
-      fn();
-
-      setSaveStatus('saved');
-      setTimeout(() => setSaveStatus('idle'), 2000);
-    } catch (err) {
-      console.error('Error saving changes:', err);
-      setSaveStatus('idle');
-      // You can add toast/error UI here if you want
-    }
-  };
-
+  // ⭐ NEW: Real API call to update profile in database
+  // This replaces the old simulateSave function
   const handleSaveDisplayName = async () => {
     if (!tempName.trim() || !user) return;
 
-    await simulateSave(() => {
-      // ⚠️ TODO: Replace with real profile update (Supabase / API)
-      // e.g., await supabase.auth.updateUser({ data: { full_name: tempName } });
+    setSaveStatus('saving');
+
+    try {
+      // Call the update-profile API endpoint
+      const res = await fetch('/api/auth/update-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ full_name: tempName }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || 'Failed to update');
+
+      // Update local state on success
       setDisplayName(tempName);
       setUser((prev) =>
         prev ? { ...prev, user_metadata: { ...prev.user_metadata, full_name: tempName } } : prev
       );
       setEditingName(false);
-    });
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus('idle'), 2000);
+    } catch (err) {
+      console.error('Error saving display name:', err);
+      setSaveStatus('idle');
+      // You can add toast/error UI here if you want
+    }
   };
 
   if (loading) {
@@ -284,14 +285,14 @@ export default function SettingsPage() {
                       {plan === 'pro' ? 'Pro Plan' : 'Free Plan'}
                     </p>
 
-                    {plan === 'free' && (
+                    {/* {plan === 'free' && (
                       <button
                         onClick={() => router.push('/pricing')}
                         className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
                       >
                         Upgrade to Pro →
                       </button>
-                    )}
+                    )} */}
                     {/* ⭐ When plan is pro, we simply hide the upgrade button */}
                   </div>
 

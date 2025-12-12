@@ -7,16 +7,90 @@ import Navigation from "@/components/Navigation";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap", // SEO: Better font loading performance
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
+// SEO: Enhanced metadata with Open Graph and Twitter Cards
 export const metadata: Metadata = {
-  title: "FlexoTools - AI-Powered Tools",
-  description: "Fast, efficient tools for image compression, PDF extraction, QR generation, and more.",
+  metadataBase: new URL('https://flexotools.com'), // TODO: Replace with your actual domain
+  title: {
+    default: "FlexoTools - Free AI-Powered Tools for Developers & Creators",
+    template: "%s | FlexoTools", // For dynamic page titles
+  },
+  description: "Fast, privacy-first tools for image compression, PDF text extraction, QR code generation, resume scoring, and text summarization. No signup required. 100% free.",
+  keywords: [
+    "image compressor",
+    "PDF text extractor",
+    "QR code generator",
+    "resume ATS scorer",
+    "text summarizer",
+    "free online tools",
+    "privacy-focused tools",
+    "web tools",
+    "developer tools",
+    "AI tools",
+    "FlexoTools",
+  ],
+  authors: [{ name: "FlexoTools" }],
+  creator: "FlexoTools",
+  publisher: "FlexoTools",
+  
+  // SEO: Open Graph (for Facebook, LinkedIn, Discord, etc.)
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://flexotools.com", // TODO: Replace with your actual domain
+    siteName: "FlexoTools",
+    title: "FlexoTools - Free AI-Powered Tools",
+    description: "Fast, privacy-first tools for image compression, PDF extraction, QR generation, and more. No signup required.",
+    images: [
+      {
+        url: "/og-image.png", // TODO: Create this image (1200x630px)
+        width: 1200,
+        height: 630,
+        alt: "FlexoTools - Free Online Tools",
+      },
+    ],
+  },
+  
+  // SEO: Twitter Card
+  twitter: {
+    card: "summary_large_image",
+    site: "@flexotoolsapp", // TODO: Replace with your Twitter handle
+    creator: "@flexotoolsapp",
+    title: "FlexoTools - Free AI-Powered Tools",
+    description: "Fast, privacy-first tools for developers and creators. Try our image compressor, PDF extractor, QR generator, and more!",
+    images: ["/twitter-image.png"], // TODO: Create this image (1200x600px)
+  },
+  
+  // SEO: Robots
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  
+  // SEO: Verification (add these when you have them)
+  // verification: {
+  //   google: "your-google-verification-code",
+  //   yandex: "your-yandex-verification-code",
+  //   bing: "your-bing-verification-code",
+  // },
+  
+  // SEO: Category
+  category: "technology",
 };
 
 export default function RootLayout({
@@ -26,11 +100,61 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* SEO: Canonical URL - prevents duplicate content issues */}
+        <link rel="canonical" href="https://flexotools.com" />
+        
+        {/* SEO: Favicon */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        
+        {/* SEO: Theme color for browser UI */}
+        <meta name="theme-color" content="#8B5CF6" />
+        
+        {/* SEO: Structured Data - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "FlexoTools",
+              url: "https://flexotools.com",
+              logo: "https://flexotools.com/logo.png",
+              description: "Privacy-first online tools for developers and creators",
+              sameAs: [
+                "https://twitter.com/flexotoolsapp", // TODO: Add your social links
+                "https://github.com/flexotools",
+              ],
+            }),
+          }}
+        />
+        
+        {/* SEO: Structured Data - WebSite */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "FlexoTools",
+              url: "https://flexotools.com",
+              description: "Free online tools for image compression, PDF extraction, QR generation, and more",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://flexotools.com/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+      </head>
+      
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Animated Background */}
-        <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
           {/* Gradient Blobs */}
           <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
           <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -43,23 +167,23 @@ export default function RootLayout({
         {/* Navigation Component */}
         <Navigation />
 
-        {/* Main Content */}
-        <main className="relative pt-16">
+        {/* Main Content - SEO: Semantic HTML */}
+        <main className="relative pt-16" role="main">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             {children}
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="relative mt-24 border-t border-foreground/10">
-          <div className="absolute inset-0 bg-linear-to-b from-transparent via-purple-500/5 to-blue-500/5 pointer-events-none"></div>
+        {/* Footer - SEO: Semantic HTML */}
+        <footer className="relative mt-24 border-t border-foreground/10" role="contentinfo">
+          <div className="absolute inset-0 bg-linear-to-b from-transparent via-purple-500/5 to-blue-500/5 pointer-events-none" aria-hidden="true"></div>
           
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
               {/* Brand Column */}
               <div className="col-span-1">
                 <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-9 h-9 bg-linear-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="w-9 h-9 bg-linear-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg" aria-hidden="true">
                     <span className="text-white font-bold text-sm">FT</span>
                   </div>
                   <span className="text-lg font-bold">FlexoTools</span>
@@ -82,36 +206,36 @@ export default function RootLayout({
               </div>
 
               {/* Tools Column */}
-              <div>
+              <nav aria-label="Tools">
                 <h3 className="font-semibold mb-4 text-foreground">Tools</h3>
                 <ul className="space-y-3 text-sm">
-                  <li><a href="/tools/image-compressor" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Image Compressor</a></li>
-                  <li><a href="/tools/pdf-text" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>PDF Text Extractor</a></li>
-                  <li><a href="/tools/qr-generator" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>QR Generator</a></li>
-                  <li><a href="/tools/resume-grader" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Resume ATS Scorer</a></li>
-                  <li><a href="/tools/text-summarizer" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Text Summarizer</a></li>
+                  <li><a href="/tools/image-compressor" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Image Compressor</a></li>
+                  <li><a href="/tools/pdf-text" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>PDF Text Extractor</a></li>
+                  <li><a href="/tools/qr-generator" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>QR Generator</a></li>
+                  <li><a href="/tools/resume-grader" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Resume ATS Scorer</a></li>
+                  <li><a href="/tools/text-summarizer" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-purple-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Text Summarizer</a></li>
                 </ul>
-              </div>
+              </nav>
 
               {/* Company Column */}
-              <div>
+              <nav aria-label="Company">
                 <h3 className="font-semibold mb-4 text-foreground">Company</h3>
                 <ul className="space-y-3 text-sm">
-                  <li><a href="/about" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>About</a></li>
-                  {/* <li><a href="/pricing" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Pricing</a></li> */}
-                  <li><a href="/contact" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Contact</a></li>
+                  <li><a href="/about" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>About</a></li>
+                  {/* <li><a href="/pricing" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Pricing</a></li> */}
+                  <li><a href="/contact" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Contact</a></li>
                 </ul>
-              </div>
+              </nav>
 
               {/* Legal Column */}
-              <div>
+              <nav aria-label="Legal">
                 <h3 className="font-semibold mb-4 text-foreground">Legal</h3>
                 <ul className="space-y-3 text-sm">
-                  <li><a href="/legal/privacy" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Privacy Policy</a></li>
-                  <li><a href="/legal/terms" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Terms of Service</a></li>
-                  <li><a href="/legal/cookies" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity"></span>Cookie Policy</a></li>
+                  <li><a href="/legal/privacy" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Privacy Policy</a></li>
+                  <li><a href="/legal/terms" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Terms of Service</a></li>
+                  <li><a href="/legal/cookies" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Cookie Policy</a></li>
                 </ul>
-              </div>
+              </nav>
             </div>
 
             {/* Bottom Bar */}
@@ -121,7 +245,7 @@ export default function RootLayout({
               </p>
               <div className="flex items-center space-x-6 text-sm text-foreground/60">
                 <span className="flex items-center">
-                  Built with <span className="text-red-500 mx-1">♥</span> using Next.js
+                  Built with <span className="text-red-500 mx-1" aria-label="love">♥</span> using Next.js
                 </span>
               </div>
             </div>

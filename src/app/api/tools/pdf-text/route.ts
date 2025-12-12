@@ -12,31 +12,36 @@ const PDFParser = require("pdf2json");
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function sanitizeFileName(name: string) {
+  // remove path separators, quotes, newlines, control chars
+  return name.replace(/["'\/\\\n\r<>:?%*|]+/g, "").slice(0, 200);
+}
+
 export async function POST(request: NextRequest) {
   let tempFilePath: string | null = null;
 
   try {
-    const format = request.nextUrl.searchParams.get("format") || "json";
+    const format = (request.nextUrl.searchParams.get("format") || "json").toLowerCase();
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json(
-        { error: "No file provided" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    if (file.type !== "application/pdf") {
+    // Accept when file.type === 'application/pdf' OR filename ends with .pdf (safer)
+    const isPdfType = file.type === "application/pdf";
+    const nameLooksLikePdf = /\.pdf$/i.test(String(file.name || ""));
+    if (!isPdfType && !nameLooksLikePdf) {
       return NextResponse.json(
         { error: "Invalid file type. Please upload a PDF file." },
         { status: 400 }
       );
     }
 
-    const baseName =
-      file.name.replace(/\.pdf$/i, "") || "document";
+    const baseNameRaw = file.name.replace(/\.pdf$/i, "") || "document";
+    const baseName = sanitizeFileName(baseNameRaw) || "document";
 
     // Save PDF to temp file
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -60,12 +65,12 @@ export async function POST(request: NextRequest) {
 
           pdfData.Pages.forEach((page: any) => {
             page.Texts.forEach((text: any) => {
-              text.R.forEach((r: any) => {
+              (text.R || []).forEach((r: any) => {
                 try {
                   const decoded = decodeURIComponent(r.T);
                   fullText += decoded + " ";
                 } catch {
-                  fullText += r.T + " ";
+                  fullText += (r.T || "") + " ";
                 }
               });
             });
@@ -81,17 +86,12 @@ export async function POST(request: NextRequest) {
       parser.loadPDF(tempFilePath as string);
     });
 
-    // Cleanup temp file
-    if (tempFilePath) {
-      await unlink(tempFilePath).catch(() => {});
-    }
+    // Heuristic: scanned PDF detection
+    const avgCharsPerPage = extractedText.length / Math.max(pageCount, 1);
+    const isLikelyScanned = avgCharsPerPage < 200;
 
-    // 1. JSON (default)
+    // Return according to requested format
     if (format === "json") {
-      const avgCharsPerPage =
-        extractedText.length / Math.max(pageCount, 1);
-      const isLikelyScanned = avgCharsPerPage < 200;
-
       return NextResponse.json({
         success: true,
         data: {
@@ -105,8 +105,13 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 2. TXT output
     if (format === "txt") {
+      if (isLikelyScanned) {
+        return NextResponse.json(
+          { error: "Scanned PDF detected — no selectable text for TXT" },
+          { status: 400 }
+        );
+      }
       return new NextResponse(extractedText, {
         headers: {
           "Content-Type": "text/plain; charset=utf-8",
@@ -115,19 +120,28 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 3. DOCX output (Word file)
     if (format === "docx") {
+      if (isLikelyScanned) {
+        return NextResponse.json(
+          { error: "Scanned PDF detected — no selectable text for DOCX" },
+          { status: 400 }
+        );
+      }
+
       const doc = new Document({
         sections: [
           {
-            children: [new Paragraph(extractedText)],
+            children: [new Paragraph(extractedText || "")],
           },
         ],
       });
 
-      const docBuffer = await Packer.toBuffer(doc);
+      const docBuffer = await Packer.toBuffer(doc); // Buffer
 
-      return new NextResponse(docBuffer as any, {
+      // Convert to Uint8Array for a robust binary response
+      const uint8 = new Uint8Array(docBuffer);
+
+      return new NextResponse(uint8, {
         headers: {
           "Content-Type":
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -136,31 +150,26 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Unknown format
     return NextResponse.json(
-      {
-        error: "Unknown format. Use ?format=json | txt | docx",
-      },
+      { error: "Unknown format. Use ?format=json | txt | docx" },
       { status: 400 }
     );
   } catch (error: any) {
-    console.error("PDF extraction error:", error);
+    console.error("PDF extraction error:", error?.message || error);
 
+    // Return a JSON error that the frontend can parse
+    return NextResponse.json(
+      { error: "Failed to extract text", details: error?.message || String(error) },
+      { status: 500 }
+    );
+  } finally {
     if (tempFilePath) {
       try {
         await unlink(tempFilePath);
       } catch {
-        // ignore
+        // ignore cleanup errors
       }
     }
-
-    return NextResponse.json(
-      {
-        error: "Failed to extract text",
-        details: error?.message || String(error),
-      },
-      { status: 500 }
-    );
   }
 }
 

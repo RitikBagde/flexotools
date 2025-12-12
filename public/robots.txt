@@ -1,0 +1,11 @@
+# Allow all search engines
+User-agent: *
+Allow: /
+
+# Disallow admin/auth pages
+Disallow: /api/
+Disallow: /auth/
+Disallow: /dashboard/
+
+# Sitemap location
+Sitemap: https://flexotools.com/sitemap.xml

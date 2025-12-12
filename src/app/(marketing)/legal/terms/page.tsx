@@ -185,8 +185,8 @@ export default function TermsOfServicePage() {
             If you have any questions about these Terms, please contact us at:
           </p>
           <div className="mt-3 p-4 bg-foreground/5 rounded-lg border border-foreground/10">
-            <p className="font-medium text-foreground">Email: support@microsaas.com</p>
-            <p className="font-medium text-foreground">Website: www.microsaas.com</p>
+            <p className="font-medium text-foreground">Email: flexotools.app@gmail.com</p>
+            <p className="font-medium text-foreground">Website: www.flexotools.com</p>
           </div>
         </div>
       </section>

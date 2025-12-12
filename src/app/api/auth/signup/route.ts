@@ -42,7 +42,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email confirmation is required
+    // ⭐ NEW: Create profiles row immediately
+    if (data.user?.id) {
+      try {
+        await supabase.from('profiles').upsert({
+          id: data.user.id,
+          full_name: name || '',
+          plan: 'free',
+        }, { onConflict: 'id' });
+      } catch (dbErr) {
+        console.error('Failed to create profile row:', dbErr);
+        // Don't fail signup - profile can be created later
+      }
+    }
+
     // Send welcome email (async, don't wait)
     if (data.user?.email) {
       try {

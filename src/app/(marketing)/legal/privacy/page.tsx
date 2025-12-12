@@ -219,13 +219,13 @@ export default function PrivacyPolicyPage() {
         <div className="border-t border-foreground/10 pt-6">
           <h2 className="text-xl font-semibold text-foreground mb-3">12. Contact Us</h2>
           <p className="mb-3">
-            If you have any questions about this Privacy Policy, please contact us.
+            If you have any questions about this Privacy Policy, please contact us:
           </p>
-          {/* <div className="mt-3 p-4 bg-foreground/5 rounded-lg border border-foreground/10">
-            <p className="font-medium text-foreground mb-2">Email: privacy@microsaas.com</p>
-            <p className="font-medium text-foreground mb-2">Support: support@microsaas.com</p>
-            <p className="font-medium text-foreground">Website: www.microsaas.com</p>
-          </div> */}
+          <div className="mt-3 p-4 bg-foreground/5 rounded-lg border border-foreground/10">
+            <p className="font-medium text-foreground mb-2">Email: flexotools.app@gmail.com</p>
+            <p className="font-medium text-foreground mb-2">Support: flexotools.team@gmail.com</p>
+            <p className="font-medium text-foreground">Website: www.flexotools.com</p>
+          </div>
         </div>
       </section>
     </main>

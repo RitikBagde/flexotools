@@ -160,18 +160,25 @@ export default function Navigation() {
   ];
 
   return (
+    // SEO: Semantic nav element with proper role
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
           ? 'bg-background/80 backdrop-blur-xl border-b border-foreground/10 shadow-lg' 
           : 'bg-transparent'
       }`}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="w-9 h-9 bg-linear-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200 shadow-lg">
+          {/* Logo - SEO: Descriptive aria-label */}
+          <Link 
+            href="/" 
+            className="flex items-center space-x-2 group"
+            aria-label="FlexoTools - Home"
+          >
+            <div className="w-9 h-9 bg-linear-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200 shadow-lg" aria-hidden="true">
               <span className="text-white font-bold text-sm">FT</span>
             </div>
             <span className="text-xl font-bold bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
@@ -190,23 +197,25 @@ export default function Navigation() {
                     ? 'text-foreground bg-foreground/5'
                     : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
                 }`}
+                aria-current={pathname === link.href ? 'page' : undefined}
               >
                 {link.label}
               </Link>
             ))}
             
-            {/* Theme Toggle */}
+            {/* Theme Toggle - SEO: Better aria-label */}
             <button
               onClick={toggleTheme}
               className="ml-2 p-2 rounded-lg hover:bg-foreground/5 transition-colors"
-              aria-label="Toggle theme"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
               {theme === 'dark' ? (
-                <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                 </svg>
               )}
@@ -215,12 +224,15 @@ export default function Navigation() {
             {/* Auth Section */}
             <div className="ml-2 min-w-[100px] flex justify-end">
               {loading ? (
-                <div className="w-9 h-9 rounded-full bg-foreground/5 animate-pulse"></div>
+                <div className="w-9 h-9 rounded-full bg-foreground/5 animate-pulse" aria-label="Loading user"></div>
               ) : user ? (
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
                     className="flex items-center space-x-2 p-2 rounded-lg hover:bg-foreground/5 transition-colors"
+                    aria-label="User menu"
+                    aria-expanded={showUserMenu}
+                    aria-haspopup="true"
                   >
                     <div className="w-9 h-9 bg-linear-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg hover:scale-110 transition-transform">
                       {getUserInitials()}
@@ -233,8 +245,13 @@ export default function Navigation() {
                       <div
                         className="fixed inset-0 z-10"
                         onClick={() => setShowUserMenu(false)}
+                        aria-hidden="true"
                       ></div>
-                      <div className="absolute right-0 mt-2 w-64 bg-background border border-foreground/10 rounded-xl shadow-2xl z-20 overflow-hidden">
+                      <div 
+                        className="absolute right-0 mt-2 w-64 bg-background border border-foreground/10 rounded-xl shadow-2xl z-20 overflow-hidden"
+                        role="menu"
+                        aria-orientation="vertical"
+                      >
                         <div className="p-4 bg-linear-to-br from-purple-500/10 to-blue-500/10 border-b border-foreground/10">
                           <p className="font-semibold text-foreground truncate">
                             {user.user_metadata?.full_name || 'User'}
@@ -249,18 +266,20 @@ export default function Navigation() {
                             href="/dashboard"
                             onClick={() => setShowUserMenu(false)}
                             className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-foreground/5 transition-colors"
+                            role="menuitem"
                           >
-                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             Account Settings
                           </Link>
-                          <div className="border-t border-foreground/10 my-2"></div>
+                          <div className="border-t border-foreground/10 my-2" role="separator"></div>
                           <button
                             onClick={handleSignOut}
                             className="w-full flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                            role="menuitem"
                           >
-                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             Sign Out
@@ -274,6 +293,7 @@ export default function Navigation() {
                 <Link
                   href="/auth"
                   className="px-5 py-2 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200"
+                  aria-label="Sign in or create account"
                 >
                   Get Started
                 </Link>
@@ -286,14 +306,14 @@ export default function Navigation() {
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg hover:bg-foreground/5 transition-colors"
-              aria-label="Toggle theme"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
               {theme === 'dark' ? (
-                <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                 </svg>
               )}
@@ -303,6 +323,8 @@ export default function Navigation() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="w-9 h-9 bg-linear-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg"
+                aria-label="Toggle mobile menu"
+                aria-expanded={mobileMenuOpen}
               >
                 {getUserInitials()}
               </button>
@@ -310,13 +332,15 @@ export default function Navigation() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 rounded-lg hover:bg-foreground/5 transition-colors"
-                aria-label="Toggle menu"
+                aria-label="Toggle mobile menu"
+                aria-expanded={mobileMenuOpen}
               >
                 <svg
                   className={`w-6 h-6 transition-transform duration-200 ${mobileMenuOpen ? 'rotate-90' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   {mobileMenuOpen ? (
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -335,6 +359,7 @@ export default function Navigation() {
         className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
           mobileMenuOpen ? 'max-h-128 opacity-100' : 'max-h-0 opacity-0'
         }`}
+        aria-hidden={!mobileMenuOpen}
       >
         <div className="px-4 py-4 space-y-2 bg-background/95 backdrop-blur-xl border-b border-foreground/10">
           {user && (
@@ -357,6 +382,7 @@ export default function Navigation() {
                   ? 'text-foreground bg-foreground/10'
                   : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
               }`}
+              aria-current={pathname === link.href ? 'page' : undefined}
             >
               {link.label}
             </Link>
