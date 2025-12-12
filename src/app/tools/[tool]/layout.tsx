@@ -1,32 +1,35 @@
 // src/app/tools/[tool]/layout.tsx
 // This layout applies SEO to ALL tool pages automatically
 
-// ============================================
-// FILE 2: src/app/tools/[tool]/layout.tsx (IMPROVED VERSION)
-// ============================================
-
 import { 
   generateToolMetadata, 
   generateHowToSchema, 
   generateWebAppSchema,
-  generateBreadcrumbSchema // ✅ NEW
+  generateBreadcrumbSchema
 } from "@/lib/seo"
 
 // Generate metadata dynamically for each tool
-export async function generateMetadata({ params }: { params: { tool: string } }) {
-  return generateToolMetadata(params.tool)
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ tool: string }> 
+}) {
+  const { tool } = await params
+  return generateToolMetadata(tool)
 }
 
-export default function ToolLayout({
+export default async function ToolLayout({
   children,
   params,
 }: {
   children: React.ReactNode
-  params: { tool: string }
+  params: Promise<{ tool: string }>
 }) {
-  const howToSchema = generateHowToSchema(params.tool)
-  const webAppSchema = generateWebAppSchema(params.tool)
-  const breadcrumbSchema = generateBreadcrumbSchema(params.tool) // ✅ NEW
+  const { tool } = await params
+  
+  const howToSchema = generateHowToSchema(tool)
+  const webAppSchema = generateWebAppSchema(tool)
+  const breadcrumbSchema = generateBreadcrumbSchema(tool)
 
   return (
     <>
@@ -46,7 +49,7 @@ export default function ToolLayout({
         />
       )}
       
-      {/* ✅ NEW: Structured Data - Breadcrumbs */}
+      {/* Structured Data - Breadcrumbs */}
       {breadcrumbSchema && (
         <script
           type="application/ld+json"
