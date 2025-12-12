@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 type AuthMode = 'signin' | 'signup' | 'forgot';
 
-export default function AuthPage() {
+// Separate component that uses useSearchParams
+function AuthForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectPath = searchParams.get('redirect');
@@ -46,10 +47,9 @@ export default function AuthPage() {
 
       setSuccess(mode === 'signin' ? '✅ Signed in successfully!' : '✅ Account created!');
       
-      // Redirect and force refresh
       setTimeout(() => {
         const destination = redirectPath || '/';
-        window.location.href = destination; // Force full page reload
+        window.location.href = destination;
       }, 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -63,7 +63,6 @@ export default function AuthPage() {
     setError('');
 
     try {
-      // Store redirect path in sessionStorage if it exists
       if (redirectPath) {
         sessionStorage.setItem('auth_redirect', redirectPath);
       }
@@ -78,7 +77,6 @@ export default function AuthPage() {
         throw new Error(data.error || 'Google sign in failed');
       }
 
-      // Redirect to Google OAuth URL
       if (data.url) {
         window.location.href = data.url;
       } else {
@@ -143,7 +141,6 @@ export default function AuthPage() {
       setSuccess('📧 Check your email for a password reset link');
       setEmail('');
       
-      // Switch back to signin after 3 seconds
       setTimeout(() => {
         setMode('signin');
         setSuccess('');
@@ -163,7 +160,6 @@ export default function AuthPage() {
     return mode === 'signin' ? '👋' : '🚀';
   };
 
-  // Forgot Password View
   if (mode === 'forgot') {
     return (
       <div className="min-h-screen bg-linear-to-br from-slate-50 via-gray-50 to-zinc-50 dark:from-slate-950 dark:via-gray-950 dark:to-zinc-950 flex items-center justify-center py-12 px-4">
@@ -255,7 +251,6 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-gray-50 to-zinc-50 dark:from-slate-950 dark:via-gray-950 dark:to-zinc-950 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
-        {/* Show redirect notice if coming from protected page */}
         {redirectPath && (
           <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-700 rounded-xl">
             <p className="text-xs font-bold text-blue-800 dark:text-blue-200 text-center">
@@ -264,7 +259,6 @@ export default function AuthPage() {
           </div>
         )}
 
-        {/* Header with Mascot */}
         <div className="text-center mb-8">
           <div className={`text-7xl mb-4 ${loading ? 'animate-spin' : 'animate-bounce'}`}>
             {getMascotEmoji()}
@@ -279,9 +273,7 @@ export default function AuthPage() {
           </p>
         </div>
 
-        {/* Main Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border-3 border-slate-200 dark:border-slate-700">
-          {/* Mode Toggle */}
           <div className="mb-6">
             <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100 dark:bg-gray-700 rounded-xl">
               <button
@@ -318,7 +310,6 @@ export default function AuthPage() {
             </div>
           </div>
 
-          {/* Magic Link Success State */}
           {magicLinkSent ? (
             <div className="text-center py-8">
               <div className="text-6xl mb-4">📧</div>
@@ -337,7 +328,6 @@ export default function AuthPage() {
             </div>
           ) : (
             <>
-              {/* Email/Password Form */}
               <form onSubmit={handleEmailAuth} className="space-y-4">
                 {mode === 'signup' && (
                   <div>
@@ -400,7 +390,6 @@ export default function AuthPage() {
                   )}
                 </div>
 
-                {/* Error/Success Messages */}
                 {error && (
                   <div className="p-3 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-700 rounded-xl flex items-start gap-2">
                     <span className="text-lg">⚠️</span>
@@ -419,7 +408,6 @@ export default function AuthPage() {
                   </div>
                 )}
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={loading}
@@ -440,7 +428,6 @@ export default function AuthPage() {
                 </button>
               </form>
 
-              {/* Divider */}
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t-2 border-gray-200 dark:border-gray-700"></div>
@@ -452,7 +439,6 @@ export default function AuthPage() {
                 </div>
               </div>
 
-              {/* Social Auth Buttons */}
               <div className="space-y-3">
                 <button
                   onClick={handleGoogleAuth}
@@ -478,7 +464,6 @@ export default function AuthPage() {
                 </button>
               </div>
 
-              {/* Footer Links */}
               {mode === 'signin' && (
                 <div className="mt-4 text-center">
                   <button 
@@ -497,7 +482,6 @@ export default function AuthPage() {
           )}
         </div>
 
-        {/* Terms */}
         <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6 font-medium">
           {mode === 'signup' ? (
             <>
@@ -517,5 +501,21 @@ export default function AuthPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+// Main page component with Suspense wrapper
+export default function AuthPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-gray-50 to-zinc-50 dark:from-slate-950 dark:via-gray-950 dark:to-zinc-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-7xl mb-4 animate-spin">⚙️</div>
+          <p className="text-gray-600 dark:text-gray-400 font-medium">Loading...</p>
+        </div>
+      </div>
+    }>
+      <AuthForm />
+    </Suspense>
   );
 }
