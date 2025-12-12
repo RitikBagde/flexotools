@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
-      to: process.env.EMAIL_REPLY_TO || 'ritikvbagde@gmail.com', // Your email where you receive messages
+      to: process.env.EMAIL_REPLY_TO || 'flexotools.app@gmail.com', // Your email where you receive messages
       replyTo: email, // User's email for easy reply
       subject: `Contact Form: ${subject}`,
       html: `
