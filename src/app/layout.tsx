@@ -112,6 +112,8 @@ export default function RootLayout({
         
         {/* SEO: Theme color for browser UI */}
         <meta name="theme-color" content="#8B5CF6" />
+
+        <meta name="google-adsense-account" content="ca-pub-4351431127336052"></meta>
         
         <Script async
         strategy="afterInteractive"
