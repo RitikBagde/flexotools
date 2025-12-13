@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -112,6 +113,12 @@ export default function RootLayout({
         {/* SEO: Theme color for browser UI */}
         <meta name="theme-color" content="#8B5CF6" />
         
+        <Script async
+        strategy="afterInteractive"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4351431127336052"
+          crossOrigin="anonymous">
+        </Script>
+
         {/* SEO: Structured Data - Organization */}
         <script
           type="application/ld+json"
