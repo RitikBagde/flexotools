@@ -108,6 +108,9 @@ export default function RootLayout({
         
         {/* SEO: Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
+
+        <link rel="icon" type="image/png" href="/favicon-48x48.png" sizes="48x48" />
+
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         
         {/* SEO: Theme color for browser UI */}
