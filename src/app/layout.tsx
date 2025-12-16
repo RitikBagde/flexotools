@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 
 const geistSans = Geist({
@@ -118,6 +119,22 @@ export default function RootLayout({
 
         <meta name="google-adsense-account" content="ca-pub-4351431127336052"></meta>
         
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=G-K27HGVPP9G`}
+          strategy="afterInteractive"
+        />
+
+        <Script id="ga4" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-K27HGVPP9G', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+
         <Script async
         strategy="afterInteractive"
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4351431127336052"
@@ -264,7 +281,8 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-
+        {/* Vercel Analytics - Privacy-first analytics solution */}
+        <Analytics />
         {/* Vercel Speed Insights - Tracks real user performance metrics */}
         <SpeedInsights />
       </body>
