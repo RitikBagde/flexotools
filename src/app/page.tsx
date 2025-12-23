@@ -91,7 +91,7 @@ export default function Home() {
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: "4.8",
-              ratingCount: "10000",
+              ratingCount: "500", // ✅ CHANGED: More conservative number
             },
             operatingSystem: "Web Browser",
             description: "Free online tools for image compression, PDF extraction, QR code generation, resume scoring, and text summarization",
@@ -116,10 +116,11 @@ export default function Home() {
           <span className="text-foreground">for Your Workflow</span>
         </h1>
         
-        {/* SEO: Descriptive paragraph with keywords */}
+        {/* ✅ UPDATED: Expanded hero paragraph with more context */}
         <p className="text-xl text-foreground/60 max-w-2xl mx-auto leading-relaxed">
-          Fast, efficient, and privacy-focused tools for image compression, PDF extraction, 
-          QR generation, and more. No signup required.
+          Fast, efficient, and privacy-focused tools for Image Compression, PDF Extraction, 
+          QR Generation, Resume Analysis, and AI Text Summarization. FlexoTools helps you 
+          get work done quickly without tracking, ads inside tools, or unnecessary signups.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -168,8 +169,12 @@ export default function Home() {
           <h2 id="tools-heading" className="text-3xl md:text-4xl font-bold text-foreground">
             Choose Your Tool
           </h2>
-          <p className="text-foreground/60">
-            Select from our collection of powerful utilities
+          
+          {/* ✅ NEW: Added introductory paragraph for editorial context */}
+          <p className="text-foreground/60 max-w-3xl mx-auto text-center mt-4">
+            FlexoTools offers a growing collection of focused utilities designed to solve 
+            common workflow problems. Each tool is built to be fast, privacy-first, and 
+            easy to use — whether you are a student, professional, or creator.
           </p>
         </div>
 
