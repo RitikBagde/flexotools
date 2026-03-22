@@ -76,8 +76,8 @@ export default function ImageCompressor() {
     const f = e.target.files?.[0] ?? null
 
       // Block files over 4MB (Vercel limit)
-    if (f && f.size > 4 * 1024 * 1024) {
-      alert("File too large! Please upload an image under 4MB.")
+    if (f && f.size > 4.5 * 1024 * 1024) {
+      alert("File too large! Please upload an image under 4.5MB.")
       e.target.value = ""
       return
     }
