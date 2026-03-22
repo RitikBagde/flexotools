@@ -74,6 +74,14 @@ export default function ImageCompressor() {
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0] ?? null
+
+      // Block files over 4MB (Vercel limit)
+    if (f && f.size > 4 * 1024 * 1024) {
+      alert("File too large! Please upload an image under 4MB.")
+      e.target.value = ""
+      return
+    }
+
     setFile(f)
     setCompressedSizeKB(null)
 
