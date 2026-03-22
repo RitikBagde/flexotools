@@ -144,13 +144,13 @@ export default function Home() {
         <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12" role="region" aria-label="Platform statistics">
           <div className="space-y-1">
             <div className="text-4xl font-bold bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent" aria-label="10,000 plus active users">
-              10K+
+              1K+
             </div>
             <div className="text-sm text-foreground/60">Active Users</div>
           </div>
           <div className="space-y-1">
             <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent" aria-label="50,000 plus files processed">
-              50K+
+              5K+
             </div>
             <div className="text-sm text-foreground/60">Files Processed</div>
           </div>
