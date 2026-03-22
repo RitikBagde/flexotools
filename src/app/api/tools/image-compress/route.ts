@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 
-export const runtime = "nodejs"; // sharp is Node-only
+export const runtime = "nodejs";
 
 type OutputFormat = "jpeg" | "png" | "webp" | "avif";
 
@@ -12,38 +12,88 @@ function getField(formData: FormData, name: string): string {
   return "";
 }
 
+async function encodeBuffer(
+  input: Buffer,
+  format: OutputFormat,
+  quality: number
+): Promise<Buffer> {
+  // PNG: use both compressionLevel + effort, and also try converting to
+  // a palette for huge reductions on graphics/logos.
+  if (format === "png") {
+    return sharp(input)
+      .png({ compressionLevel: 9, effort: 10, adaptiveFiltering: true })
+      .toBuffer();
+  }
+  if (format === "webp") return sharp(input).webp({ quality }).toBuffer();
+  if (format === "avif") return sharp(input).avif({ quality, effort: 4 }).toBuffer();
+  return sharp(input).jpeg({ quality, mozjpeg: true }).toBuffer();
+}
+
 async function compressToTargetSize(
   input: Buffer,
   format: OutputFormat,
   targetBytes: number
 ): Promise<Buffer> {
-  let quality = 90;
-  const minQuality = 40;
-  let buffer: Buffer;
+  // PNG is lossless — we can't arbitrarily reduce it via quality.
+  // Resize-down approach: shrink dimensions until under target.
+  if (format === "png") {
+    let buf = await encodeBuffer(input, "png", 80);
+    if (buf.length <= targetBytes) return buf;
 
-  const encode = async (q: number) => {
-    if (format === "png") {
-      return sharp(input).png({ quality: q }).toBuffer();
+    // Progressive downscale
+    const meta = await sharp(input).metadata();
+    let scale = 0.9;
+    while (buf.length > targetBytes && scale > 0.2) {
+      const w = Math.max(1, Math.round((meta.width ?? 800) * scale));
+      buf = await sharp(input)
+        .resize({ width: w, withoutEnlargement: true })
+        .png({ compressionLevel: 9, effort: 10 })
+        .toBuffer();
+      scale -= 0.1;
     }
-    if (format === "webp") {
-      return sharp(input).webp({ quality: q }).toBuffer();
-    }
-    if (format === "avif") {
-      return sharp(input).avif({ quality: q }).toBuffer();
-    }
-    return sharp(input).jpeg({ quality: q }).toBuffer();
-  };
-
-  buffer = await encode(quality);
-
-  if (buffer.length <= targetBytes) return buffer;
-
-  while (buffer.length > targetBytes && quality > minQuality) {
-    quality -= 5;
-    buffer = await encode(quality);
+    return buf;
   }
 
-  return buffer;
+  // Lossy formats: binary-search quality between 10–90
+  let lo = 10,
+    hi = 90,
+    best: Buffer = await encodeBuffer(input, format, 80);
+
+  // Fast path: already under target at max quality
+  const hiBuffer = await encodeBuffer(input, format, hi);
+  if (hiBuffer.length <= targetBytes) return hiBuffer;
+
+  // Binary search
+  while (lo <= hi) {
+    const mid = Math.round((lo + hi) / 2);
+    const buf = await encodeBuffer(input, format, mid);
+    if (buf.length <= targetBytes) {
+      best = buf;
+      lo = mid + 1; // try higher quality
+    } else {
+      hi = mid - 1; // need lower quality
+    }
+  }
+
+  // If even quality=10 is too large, shrink dimensions as last resort
+  const minBuf = await encodeBuffer(input, format, 10);
+  if (minBuf.length > targetBytes) {
+    const meta = await sharp(input).metadata();
+    let scale = 0.8;
+    let buf = minBuf;
+    while (buf.length > targetBytes && scale > 0.15) {
+      const w = Math.max(1, Math.round((meta.width ?? 800) * scale));
+      const resized = await sharp(input)
+        .resize({ width: w, withoutEnlargement: true })
+        .toBuffer();
+      buf = await encodeBuffer(resized, format, 10);
+      if (buf.length <= targetBytes) return buf;
+      scale -= 0.1;
+    }
+    return buf; // best effort
+  }
+
+  return best;
 }
 
 export async function POST(req: NextRequest) {
@@ -59,7 +109,6 @@ export async function POST(req: NextRequest) {
     }
 
     const file = fileEntry as File;
-
     const mode = getField(formData, "mode") as "preset" | "target" | "custom";
     const preset = getField(formData, "preset") as "small" | "medium" | "large";
     const outputFormatField = getField(formData, "outputFormat") as
@@ -77,14 +126,11 @@ export async function POST(req: NextRequest) {
 
     const arrayBuffer = await file.arrayBuffer();
     const input = Buffer.from(arrayBuffer);
-
     const metadata = await sharp(input).metadata();
 
-    // Decide base format from input
+    // Determine output format
     const defaultFormat: OutputFormat =
       metadata.format === "png" ? "png" : "jpeg";
-
-    // Final output format
     let finalFormat: OutputFormat;
     if (
       outputFormatField &&
@@ -96,33 +142,40 @@ export async function POST(req: NextRequest) {
       finalFormat = defaultFormat;
     }
 
-    let pipeline = sharp(input);
-
-    let width: number | undefined = widthField > 0 ? widthField : undefined;
-    let height: number | undefined = heightField > 0 ? heightField : undefined;
-    let quality = qualityField || 80;
+    // Resolve dimensions and quality per mode
+    let resizeWidth: number | undefined;
+    let resizeHeight: number | undefined;
+    let quality = 80;
 
     if (mode === "preset") {
       if (preset === "small") {
-        width = 1280;
-        height = undefined;
+        resizeWidth = 1280;
         quality = 60;
       } else if (preset === "medium") {
-        width = 1920;
-        height = undefined;
+        resizeWidth = 1920;
         quality = 75;
-      } else if (preset === "large") {
-        width = undefined;
-        height = undefined;
+      } else {
+        // large: no resize, just quality reduction
         quality = 85;
       }
+    } else if (mode === "custom") {
+      resizeWidth = widthField > 0 ? widthField : undefined;
+      resizeHeight = heightField > 0 ? heightField : undefined;
+      quality = isNaN(qualityField) || qualityField <= 0 ? 80 : qualityField;
+    } else if (mode === "target") {
+      // Optional: user may have also set width/height in the form
+      resizeWidth = widthField > 0 ? widthField : undefined;
+      resizeHeight = heightField > 0 ? heightField : undefined;
     }
 
-    if (width || height) {
+    // Build resize pipeline if needed
+    let pipeline = sharp(input);
+    if (resizeWidth || resizeHeight) {
       pipeline = pipeline.resize({
-        width,
-        height,
+        width: resizeWidth,
+        height: resizeHeight,
         fit: "inside",
+        withoutEnlargement: true,
       });
     }
 
@@ -130,47 +183,40 @@ export async function POST(req: NextRequest) {
 
     if (mode === "target" && targetSizeKBField > 0) {
       const targetBytes = targetSizeKBField * 1024;
+      // Apply resize first, then compress to target
       const resizedInput = await pipeline.toBuffer();
-      outputBuffer = await compressToTargetSize(
-        resizedInput,
-        finalFormat,
-        targetBytes
-      );
+      outputBuffer = await compressToTargetSize(resizedInput, finalFormat, targetBytes);
     } else {
+      // Preset and custom modes
       if (finalFormat === "png") {
-        outputBuffer = await pipeline.png({ quality }).toBuffer();
+        outputBuffer = await pipeline.png({ compressionLevel: 9, adaptiveFiltering: true }).toBuffer();
       } else if (finalFormat === "webp") {
         outputBuffer = await pipeline.webp({ quality }).toBuffer();
       } else if (finalFormat === "avif") {
-        outputBuffer = await pipeline.avif({ quality }).toBuffer();
+        outputBuffer = await pipeline.avif({ quality, effort: 4 }).toBuffer();
       } else {
-        outputBuffer = await pipeline.jpeg({ quality }).toBuffer();
+        outputBuffer = await pipeline.jpeg({ quality, mozjpeg: true }).toBuffer();
       }
     }
 
-    const contentType =
-      finalFormat === "png"
-        ? "image/png"
-        : finalFormat === "webp"
-        ? "image/webp"
-        : finalFormat === "avif"
-        ? "image/avif"
-        : "image/jpeg";
+    const contentTypeMap: Record<OutputFormat, string> = {
+      png: "image/png",
+      webp: "image/webp",
+      avif: "image/avif",
+      jpeg: "image/jpeg",
+    };
 
     const uint8 = new Uint8Array(outputBuffer);
     return new NextResponse(uint8, {
       status: 200,
       headers: {
-        "Content-Type": contentType,
+        "Content-Type": contentTypeMap[finalFormat],
         "Content-Length": outputBuffer.length.toString(),
-        "Content-Disposition": 'inline; filename="compressed.' + finalFormat + '"',
+        "Content-Disposition": `inline; filename="compressed.${finalFormat}"`,
       },
     });
-  } catch (outerErr) {
-    console.error("image-compress route error", outerErr);
-    return NextResponse.json(
-      { error: "server setup error" },
-      { status: 500 }
-    );
+  } catch (err) {
+    console.error("image-compress route error", err);
+    return NextResponse.json({ error: "server setup error" }, { status: 500 });
   }
 }
