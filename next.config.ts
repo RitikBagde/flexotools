@@ -1,17 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
-  
-  // Turbopack configuration for Next.js 16
+
   turbopack: {
     resolveAlias: {
       canvas: './empty-canvas.js',
     },
   },
-  
-  // Webpack configuration (for production builds)
+
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.resolve.alias = {
@@ -21,6 +18,21 @@ const nextConfig: NextConfig = {
       };
     }
     return config;
+  },
+
+  async redirects() {
+    return [
+      {
+        source: '/tools/pdf-text',
+        destination: '/tools/pdf-text-extractor',
+        permanent: true,
+      },
+      {
+        source: '/tools/resume-grader',
+        destination: '/tools/resume-ats-checker',
+        permanent: true,
+      },
+    ];
   },
 };
 

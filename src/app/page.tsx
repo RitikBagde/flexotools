@@ -2,14 +2,18 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
-// SEO: Page-specific metadata
 export const metadata: Metadata = {
   title: "Free Online Tools - Image Compressor, PDF Extractor, QR Generator",
   description: "Use our free online tools: compress images up to 80%, extract text from PDFs, generate QR codes, score resumes with AI, and summarize text. No signup required. Privacy-first.",
+  alternates: {
+    // FIX 1: Per-page canonical so this page correctly points to itself,
+    // not inherited from the hardcoded layout.tsx <link rel="canonical">
+    canonical: 'https://flexotools.com',
+  },
   openGraph: {
     title: "FlexoTools - Free Online Tools for Everyone",
     description: "Fast, privacy-focused tools for image compression, PDF extraction, QR generation, and more",
-    images: ["/og-home.png"], // TODO: Create specific OG image for homepage
+    images: ["/og-home.png"],
   },
 };
 
@@ -74,7 +78,7 @@ export default function Home() {
 
   return (
     <div className="space-y-20">
-      {/* SEO: Structured Data for SoftwareApplication */}
+      {/* Structured Data for SoftwareApplication */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -91,7 +95,7 @@ export default function Home() {
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: "4.8",
-              ratingCount: "500", // ✅ CHANGED: More conservative number
+              ratingCount: "500",
             },
             operatingSystem: "Web Browser",
             description: "Free online tools for image compression, PDF extraction, QR code generation, resume scoring, and text summarization",
@@ -106,8 +110,7 @@ export default function Home() {
             ✨ Your All-in-One Toolkit
           </span>
         </div>
-        
-        {/* SEO: Main heading with keywords */}
+
         <h1 id="hero-heading" className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
           <span className="bg-linear-to-r from-purple-500 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
             Powerful Tools
@@ -115,14 +118,13 @@ export default function Home() {
           <br />
           <span className="text-foreground">for Your Workflow</span>
         </h1>
-        
-        {/* ✅ UPDATED: Expanded hero paragraph with more context */}
+
         <p className="text-xl text-foreground/60 max-w-2xl mx-auto leading-relaxed">
-          Fast, efficient, and privacy-focused tools for Image Compression, PDF Extraction, 
-          QR Generation, Resume Analysis, and AI Text Summarization. FlexoTools helps you 
+          Fast, efficient, and privacy-focused tools for Image Compression, PDF Extraction,
+          QR Generation, Resume Analysis, and AI Text Summarization. FlexoTools helps you
           get work done quickly without tracking, ads inside tools, or unnecessary signups.
         </p>
-        
+
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <a
             href="#tools"
@@ -140,22 +142,22 @@ export default function Home() {
           </a>
         </div>
 
-        {/* Stats - SEO: Add meaningful context */}
+        {/* FIX 2: aria-label values now match the visible text exactly */}
         <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12" role="region" aria-label="Platform statistics">
           <div className="space-y-1">
-            <div className="text-4xl font-bold bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent" aria-label="10,000 plus active users">
+            <div className="text-4xl font-bold bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
               1K+
             </div>
             <div className="text-sm text-foreground/60">Active Users</div>
           </div>
           <div className="space-y-1">
-            <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent" aria-label="50,000 plus files processed">
+            <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
               5K+
             </div>
             <div className="text-sm text-foreground/60">Files Processed</div>
           </div>
           <div className="space-y-1">
-            <div className="text-4xl font-bold bg-linear-to-r from-cyan-500 to-green-500 bg-clip-text text-transparent" aria-label="100 percent privacy safe">
+            <div className="text-4xl font-bold bg-linear-to-r from-cyan-500 to-green-500 bg-clip-text text-transparent">
               100%
             </div>
             <div className="text-sm text-foreground/60">Privacy Safe</div>
@@ -163,22 +165,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Tools Grid - SEO: Semantic HTML with proper headings */}
+      {/* Tools Grid */}
       <section id="tools" className="space-y-8" aria-labelledby="tools-heading">
         <div className="text-center space-y-3">
           <h2 id="tools-heading" className="text-3xl md:text-4xl font-bold text-foreground">
             Choose Your Tool
           </h2>
-          
-          {/* ✅ NEW: Added introductory paragraph for editorial context */}
           <p className="text-foreground/60 max-w-3xl mx-auto text-center mt-4">
-            FlexoTools offers a growing collection of focused utilities designed to solve 
-            common workflow problems. Each tool is built to be fast, privacy-first, and 
+            FlexoTools offers a growing collection of focused utilities designed to solve
+            common workflow problems. Each tool is built to be fast, privacy-first, and
             easy to use — whether you are a student, professional, or creator.
           </p>
         </div>
 
-        {/* SEO: Grid with proper list semantics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
           {tools.map((tool, index) => (
             <Link
@@ -190,12 +189,9 @@ export default function Home() {
               role="listitem"
             >
               <article className="relative h-full p-6 rounded-2xl border border-foreground/10 bg-background/50 backdrop-blur-sm hover:border-foreground/20 hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-300 hover:-translate-y-1">
-                {/* Gradient Overlay */}
                 <div className={`absolute inset-0 rounded-2xl bg-linear-to-br ${tool.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} aria-hidden="true"></div>
-                
-                {/* Content */}
+
                 <div className="relative space-y-4">
-                  {/* Icon */}
                   <div className="flex items-center justify-between">
                     <div className={`w-12 h-12 rounded-xl bg-linear-to-br ${tool.gradient} flex items-center justify-center text-2xl shadow-lg`} aria-hidden="true">
                       {tool.icon}
@@ -204,8 +200,7 @@ export default function Home() {
                       {tool.stats}
                     </span>
                   </div>
-                  
-                  {/* Text */}
+
                   <div className="space-y-2">
                     <h3 className="text-xl font-bold text-foreground group-hover:text-transparent group-hover:bg-linear-to-r group-hover:bg-clip-text group-hover:from-purple-500 group-hover:to-blue-500 transition-all">
                       {tool.title}
@@ -214,8 +209,7 @@ export default function Home() {
                       {tool.description}
                     </p>
                   </div>
-                  
-                  {/* Arrow */}
+
                   <div className="flex items-center text-sm font-medium text-foreground/40 group-hover:text-foreground/80 transition-colors">
                     <span>Try it now</span>
                     <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -229,7 +223,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section - SEO: Descriptive headings */}
+      {/* Features Section */}
       <section id="features" className="space-y-8" aria-labelledby="features-heading">
         <div className="text-center space-y-3">
           <h2 id="features-heading" className="text-3xl md:text-4xl font-bold text-foreground">
@@ -256,23 +250,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section - SEO: Clear call to action */}
+      {/* CTA Section */}
+      {/* FIX 3: Removed <a> wrapping a <button> — invalid HTML that breaks Google Ads policy.
+          Use a single element: either an <a> styled as a button, or a plain <button> with
+          an onClick handler. Here we use an <a> styled as a button. */}
       <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-purple-500/10 via-blue-500/10 to-cyan-500/10 border border-foreground/10 p-12 text-center space-y-6" aria-labelledby="cta-heading">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-size-[32px_32px]" aria-hidden="true"></div>
-        
+
         <div className="relative space-y-4">
           <h2 id="cta-heading" className="text-3xl md:text-4xl font-bold text-foreground">
             Ready to Get Started?
           </h2>
           <p className="text-foreground/60 max-w-2xl mx-auto">
-            Join thousands of users who trust our tools for their workflow. 
+            Join thousands of users who trust our tools for their workflow.
             No credit card required.
           </p>
-          <a href="#tools" aria-label="Start using our free tools">
-            <button className="px-8 py-3 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200">
-              Start Using Tools
-            </button>
-          </a>  
+          <a
+            href="#tools"
+            aria-label="Start using our free tools"
+            className="inline-block px-8 py-3 bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 transition-all duration-200"
+          >
+            Start Using Tools
+          </a>
         </div>
       </section>
     </div>

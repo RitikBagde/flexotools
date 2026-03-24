@@ -1,55 +1,68 @@
 // app/sitemap.ts
-// Automatically generates sitemap for all tools
+// Generates sitemap for all pages. Submitted to Google Search Console
+// at: https://flexotools.com/sitemap.xml
 
 import { MetadataRoute } from 'next'
-import { SITE_CONFIG, getAllToolSlugs } from '@/lib/seo'
+
+const BASE_URL = 'https://flexotools.com'
+
+// FIX: Hardcode your tool slugs directly here instead of relying on
+// getAllToolSlugs() from a lib file. If that function throws or returns
+// an empty array, none of your tool pages will appear in the sitemap
+// and Google won't index them. Hardcoding is safer, more readable,
+// and easier to audit. Add new tools to this list when you launch them.
+const TOOL_SLUGS = [
+  'image-compressor',
+  'pdf-text',
+  'qr-generator',
+  'resume-grader',
+  'text-summarizer',
+]
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = SITE_CONFIG.domain
-
   // Static pages
-  const staticPages = [
+  const staticPages: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
+      url: BASE_URL,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/about`,
+      url: `${BASE_URL}/about`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${BASE_URL}/contact`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/legal/privacy`,
+      url: `${BASE_URL}/legal/privacy`,
       lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
+      changeFrequency: 'yearly',
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/legal/terms`,
+      url: `${BASE_URL}/legal/terms`,
       lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
+      changeFrequency: 'yearly',
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/legal/cookies`,
+      url: `${BASE_URL}/legal/cookies`,
       lastModified: new Date(),
-      changeFrequency: 'yearly' as const,
+      changeFrequency: 'yearly',
       priority: 0.5,
     },
   ]
 
-  // Dynamically generate tool pages from SEO config
-  const toolPages = getAllToolSlugs().map((toolSlug) => ({
-    url: `${baseUrl}/tools/${toolSlug}`,
+  // Tool pages — highest priority after homepage
+  const toolPages: MetadataRoute.Sitemap = TOOL_SLUGS.map((slug) => ({
+    url: `${BASE_URL}/tools/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
