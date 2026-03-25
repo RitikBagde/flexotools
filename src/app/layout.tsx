@@ -230,6 +230,7 @@ export default function RootLayout({
                 <h3 className="font-semibold mb-4 text-foreground">Company</h3>
                 <ul className="space-y-3 text-sm">
                   <li><a href="/about" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>About</a></li>
+                  <li><a href="/blog" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Blog</a></li>
                   <li><a href="/contact" className="text-foreground/60 hover:text-foreground transition-colors flex items-center group"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>Contact</a></li>
                 </ul>
               </nav>
