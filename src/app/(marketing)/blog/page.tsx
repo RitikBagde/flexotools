@@ -59,6 +59,24 @@ const posts = [
     date: 'March 25, 2026',
     readTime: '5 min read',
   },
+  {
+    slug: 'what-is-ats-and-why-resume-gets-rejected',
+    title: 'What Is an ATS and Why Your Resume Gets Rejected Before a Human Reads It',
+    excerpt:
+      'Most job applications are filtered out by software before a recruiter ever sees them. Learn how ATS works, what triggers automatic rejection, and how to write a resume that actually passes.',
+    category: 'Resume Tips',
+    date: 'March 25, 2026',
+    readTime: '8 min read',
+  },
+  {
+    slug: 'qr-code-best-practices-small-business',
+    title: 'QR Code Best Practices for Small Businesses in 2026',
+    excerpt:
+      'Most QR codes get ignored — not because people don\'t scan, but because placement, size, contrast, and context are wrong. Here\'s what actually drives scan rates for real businesses.',
+    category: 'QR Codes',
+    date: 'March 25, 2026',
+    readTime: '7 min read',
+  },
 ]
 
 // ✅ FIX 1: Solid text colors that are visible in BOTH light and dark mode

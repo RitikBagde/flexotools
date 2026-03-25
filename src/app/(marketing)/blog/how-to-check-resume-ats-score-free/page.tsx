@@ -183,7 +183,7 @@ export default function BlogPostATSScorer() {
             </h2>
             <p className="text-foreground/70 leading-relaxed mb-6">
               Open{' '}
-              <Link href="/tools/resume-ats-scorer" className="text-orange-500 hover:underline font-medium">
+              <Link href="/tools/resume-ats-checker" className="text-orange-500 hover:underline font-medium">
                 FlexoTools Resume ATS Scorer
               </Link>{' '}
               in your browser. Here is the full process.
@@ -311,7 +311,7 @@ export default function BlogPostATSScorer() {
               Free scan, instant results, plain-English feedback.
             </p>
             <Link
-              href="/tools/resume-ats-scorer"
+              href="/tools/resume-ats-checker"
               className="inline-block px-8 py-3 bg-linear-to-r from-orange-500 to-red-500 text-white rounded-xl font-bold hover:scale-105 hover:shadow-xl hover:shadow-orange-500/20 transition-all duration-200"
             >
               📄 Check My ATS Score

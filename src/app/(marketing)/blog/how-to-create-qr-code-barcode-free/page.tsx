@@ -167,7 +167,7 @@ export default function BlogPostQRGenerator() {
             </h2>
             <p className="text-foreground/70 leading-relaxed mb-6">
               Open{' '}
-              <Link href="/tools/qr-code-generator" className="text-slate-600 dark:text-slate-400 hover:underline font-medium">
+              <Link href="/tools/qr-generator" className="text-slate-600 dark:text-slate-400 hover:underline font-medium">
                 FlexoTools QR Code & Barcode Generator
               </Link>{' '}
               in your browser. No account needed.
@@ -338,7 +338,7 @@ export default function BlogPostQRGenerator() {
               Free, instant, no signup. QR codes and barcodes in seconds.
             </p>
             <Link
-              href="/tools/qr-code-generator"
+              href="/tools/qr-generator"
               className="inline-block px-8 py-3 bg-linear-to-r from-slate-600 to-blue-600 text-white rounded-xl font-bold hover:scale-105 hover:shadow-xl hover:shadow-slate-500/20 transition-all duration-200"
             >
               ▦ Open QR Code Generator
