@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
       }
 
       // Check if this is a password recovery flow
-      const { data: { session } } = await supabase.auth.getSession();
+      const type = requestUrl.searchParams.get('type');
 
-      if (session?.user?.recovery_sent_at) {
+      if (type === 'recovery') {
         return NextResponse.redirect(`${origin}/auth/reset-password`);
       }
 
