@@ -23,41 +23,23 @@ export default function ResetPasswordPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-
-    const checkAuth = async () => {
-      try {
-        // Simple session check
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        console.log('Session check:', session ? 'Found' : 'Not found');
-        
-        if (mounted) {
-          if (session) {
-            setIsAuthenticated(true);
-          } else {
-            setError('Invalid or expired reset link. Please request a new one.');
-            setIsAuthenticated(false);
-          }
-        }
-      } catch (err) {
-        console.error('Auth check error:', err);
-        if (mounted) {
-          setError('Failed to validate reset link');
-          setIsAuthenticated(false);
-        }
-      } finally {
-        if (mounted) {
-          setCheckingAuth(false);
-        }
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY' && session) {
+        setIsAuthenticated(true);
+        setCheckingAuth(false);
+      } else if (event === 'SIGNED_OUT' || (!session && event !== 'INITIAL_SESSION')) {
+        setError('Invalid or expired reset link. Please request a new one.');
+        setIsAuthenticated(false);
+        setCheckingAuth(false);
       }
-    };
+    });
 
-    // Wait a bit for Supabase to process URL hash
-    const timer = setTimeout(checkAuth, 1000);
+    const timer = setTimeout(() => {
+      setCheckingAuth(false);
+    }, 3000);
 
     return () => {
-      mounted = false;
+      listener.subscription.unsubscribe();
       clearTimeout(timer);
     };
   }, [supabase]);

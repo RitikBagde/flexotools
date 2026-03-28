@@ -27,8 +27,15 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(`${origin}/auth?error=${encodeURIComponent('Authentication failed. Please try again.')}`);
       }
 
-      // Successful authentication - redirect to home page
-      return NextResponse.redirect(`${origin}/`);
+      // Check if this is a password recovery flow
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session?.user?.recovery_sent_at) {
+        return NextResponse.redirect(`${origin}/auth/reset-password`);
+      }
+
+      // Normal login - go to dashboard
+      return NextResponse.redirect(`${origin}/dashboard`);
     } catch (error) {
       console.error('Auth callback error:', error);
       return NextResponse.redirect(`${origin}/auth?error=${encodeURIComponent('An unexpected error occurred')}`);
