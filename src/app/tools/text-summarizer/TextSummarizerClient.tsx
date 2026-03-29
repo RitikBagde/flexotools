@@ -235,10 +235,10 @@ export default function TextSummarizerPage() {
               />
               <div className="flex justify-between items-center mt-2 flex-wrap gap-2">
                 <div className="flex gap-3 text-xs font-semibold">
-                  <span className="px-2 py-1 bg-lime-100 dark:bg-lime-900/30 rounded-full text-lime-700 dark:text-lime-300">
+                  <span className="px-2 py-1 bg-lime-100 dark:bg-lime-900/20 rounded-full text-lime-700 dark:text-lime-600">
                     📊 {inputText.length.toLocaleString()} chars
                   </span>
-                  <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded-full text-green-700 dark:text-green-300">
+                  <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 rounded-full text-green-700 dark:text-green-400">
                     📖 {wordCount} words
                   </span>
                 </div>
@@ -435,7 +435,7 @@ export default function TextSummarizerPage() {
             })}
 
             <div className="mt-6 p-4 bg-lime-50 dark:bg-lime-900/10 rounded-xl border-2 border-lime-200 dark:border-lime-700">
-              <p className="text-sm font-semibold text-lime-900 dark:text-lime-200">
+              <p className="text-sm font-semibold text-lime-900 dark:text-lime-600">
                 💡 <strong>Pro Tip:</strong> For best summaries, paste a complete section (with headings/intros) rather than isolated sentences.
               </p>
             </div>

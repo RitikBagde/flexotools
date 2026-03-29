@@ -60,6 +60,15 @@ const posts = [
     readTime: '5 min read',
   },
   {
+    slug: 'jpg-vs-png-vs-webp-vs-avif',
+    title: 'JPG vs PNG vs WebP vs AVIF — Which Image Format Should You Use?',
+    excerpt:
+      'A plain-English breakdown of every major image format. Learn when to use JPG, PNG, WebP or AVIF for websites, social media, print and email — with file size comparisons.',
+    category: 'Image Compression',
+    date: 'March 25, 2026',
+    readTime: '8 min read',
+  },
+  {
     slug: 'what-is-ats-and-why-resume-gets-rejected',
     title: 'What Is an ATS and Why Your Resume Gets Rejected Before a Human Reads It',
     excerpt:
@@ -76,6 +85,60 @@ const posts = [
     category: 'QR Codes',
     date: 'March 25, 2026',
     readTime: '7 min read',
+  },
+  {
+    slug: 'pdf-vs-word-vs-txt-which-format-to-use',
+    title: 'PDF vs Word vs TXT — Which Format Should You Use and When',
+    excerpt:
+      'PDF, DOCX, and TXT all store text but work completely differently. Learn when each format is the right choice, when to convert between them, and how to get plain text out of a PDF without installing anything.',
+    category: 'PDF Tools',
+    date: 'March 25, 2026',
+    readTime: '7 min read',
+  },
+  {
+    slug: 'how-to-write-a-resume-summary-that-passes-ats',
+    title: 'How to Write a Resume Summary That Passes ATS',
+    excerpt:
+      'Your resume summary is the first thing an ATS reads. Learn how to write a keyword-rich, compelling summary that gets past the filter and impresses recruiters.',
+    category: 'Resume Tips',
+    date: 'March 25, 2026',
+    readTime: '6 min read',
+  },
+  {
+    slug: 'top-10-ats-resume-mistakes',
+    title: 'Top 10 ATS Resume Mistakes and How to Fix Them',
+    excerpt:
+      'These 10 resume mistakes cause automatic rejection by ATS software — even for qualified candidates. Find out if your resume is making them and how to fix each one.',
+    category: 'Resume Tips',
+    date: 'March 25, 2026',
+    readTime: '9 min read',
+  },
+  {
+    slug: 'how-to-use-ai-summarizer-effectively',
+    title: 'How to Use an AI Text Summarizer Effectively — What Works and What Doesn\'t',
+    excerpt:
+      'AI summarizers save real time — but only on the right content. Learn which text types compress well, which don\'t, and the 5 workflows that get the most useful results.',
+    category: 'AI Tools',
+    date: 'March 25, 2026',
+    readTime: '7 min read',
+  },
+  {
+    slug: 'how-to-generate-qr-code-for-social-media',
+    title: 'How to Generate a QR Code for WhatsApp, Instagram or YouTube',
+    excerpt:
+      'Step-by-step guide to creating QR codes that link directly to your WhatsApp chat, Instagram profile, YouTube channel and more. Free, no signup.',
+    category: 'QR Codes',
+    date: 'March 25, 2026',
+    readTime: '5 min read',
+  },
+  {
+    slug: 'dynamic-vs-static-qr-codes',
+    title: "Dynamic vs Static QR Codes — What's the Difference?",
+    excerpt:
+      'Static QR codes are free and permanent. Dynamic QR codes are editable but cost money. Learn which type you actually need before you print anything.',
+    category: 'QR Codes',
+    date: 'March 25, 2026',
+    readTime: '6 min read',
   },
 ]
 

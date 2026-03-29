@@ -422,7 +422,7 @@ export default function PdfTextExtractor() {
             })}
 
             <div className="mt-6 p-4 bg-teal-50 dark:bg-teal-900/10 rounded-xl border-2 border-teal-200 dark:border-teal-700">
-              <p className="text-sm font-semibold text-teal-900 dark:text-teal-200">
+              <p className="text-sm font-semibold text-teal-900 dark:text-teal-500">
                 💡 <strong>Pro Tip:</strong> For best results, use PDFs that were created digitally (not scanned). If you have a scanned PDF, try a dedicated OCR tool first.
               </p>
             </div>

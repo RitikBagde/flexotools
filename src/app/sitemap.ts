@@ -1,72 +1,175 @@
-// app/sitemap.ts
-// Generates sitemap for all pages. Submitted to Google Search Console
-// at: https://flexotools.com/sitemap.xml
-
-import { MetadataRoute } from 'next'
-
-const BASE_URL = 'https://flexotools.com'
-
-// FIX: Hardcode your tool slugs directly here instead of relying on
-// getAllToolSlugs() from a lib file. If that function throws or returns
-// an empty array, none of your tool pages will appear in the sitemap
-// and Google won't index them. Hardcoding is safer, more readable,
-// and easier to audit. Add new tools to this list when you launch them.
-const TOOL_SLUGS = [
-  'image-compressor',
-  'pdf-text',
-  'qr-generator',
-  'resume-grader',
-  'text-summarizer',
-]
+// src/app/sitemap.ts
+import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Static pages
-  const staticPages: MetadataRoute.Sitemap = [
+  const base = 'https://flexotools.com'
+  const now = new Date('2026-03-29')
+
+  return [
+    // ── Core pages ──
     {
-      url: BASE_URL,
-      lastModified: new Date(),
+      url: base,
+      lastModified: now,
       changeFrequency: 'daily',
-      priority: 1.0,
+      priority: 1,
     },
     {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
+      url: `${base}/about`,
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/contact`,
-      lastModified: new Date(),
+      url: `${base}/contact`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+
+    // ── Legal ──
+    {
+      url: `${base}/legal/privacy`,
+      lastModified: now,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${base}/legal/terms`,
+      lastModified: now,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+    {
+      url: `${base}/legal/cookies`,
+      lastModified: now,
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
+
+    // ── Tools —  actual folder names ──
+    {
+      url: `${base}/tools/image-compressor`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${base}/tools/pdf-text-extractor`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${base}/tools/qr-generator`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${base}/tools/resume-ats-checker`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${base}/tools/text-summarizer`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+
+    // ── Blog index ──
+    {
+      url: `${base}/blog`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+
+    // ── Blog posts — all 14 ──
+    {
+      url: `${base}/blog/dynamic-vs-static-qr-codes`,
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/legal/privacy`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.5,
+      url: `${base}/blog/how-to-check-resume-ats-score-free`,
+      lastModified: new Date('2026-03-25'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
     },
     {
-      url: `${BASE_URL}/legal/terms`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.5,
+      url: `${base}/blog/how-to-compress-images-without-losing-quality`,
+      lastModified: new Date('2026-03-25'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
     },
     {
-      url: `${BASE_URL}/legal/cookies`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.5,
+      url: `${base}/blog/how-to-create-qr-code-barcode-free`,
+      lastModified: new Date('2026-03-25'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${base}/blog/how-to-extract-text-from-pdf-free`,
+      lastModified: new Date('2026-03-25'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${base}/blog/how-to-generate-qr-code-for-social-media`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${base}/blog/how-to-summarize-text-online-free`,
+      lastModified: new Date('2026-03-25'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${base}/blog/how-to-use-ai-summarizer-effectively`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${base}/blog/how-to-write-a-resume-summary-that-passes-ats`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${base}/blog/jpg-vs-png-vs-webp-vs-avif`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${base}/blog/pdf-vs-word-vs-txt-which-format-to-use`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${base}/blog/qr-code-best-practices-small-business`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${base}/blog/top-10-ats-resume-mistakes`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${base}/blog/what-is-ats-and-why-resume-gets-rejected`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
     },
   ]
-
-  // Tool pages — highest priority after homepage
-  const toolPages: MetadataRoute.Sitemap = TOOL_SLUGS.map((slug) => ({
-    url: `${BASE_URL}/tools/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.9,
-  }))
-
-  return [...staticPages, ...toolPages]
 }
