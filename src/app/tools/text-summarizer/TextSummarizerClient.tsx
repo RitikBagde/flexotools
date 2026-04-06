@@ -15,6 +15,7 @@ export default function TextSummarizerPage() {
   const [title, setTitle] = useState("");
   const [bullets, setBullets] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [slowMessage, setSlowMessage] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [rateLimitInfo, setRateLimitInfo] = useState<{ message: string; resetIn: number } | null>(null);
   const [stats, setStats] = useState<{ originalLength?: number; summaryLength?: number } | null>(null);
@@ -56,20 +57,31 @@ export default function TextSummarizerPage() {
   ];
 
   const faqSchema = generateFAQSchema(faqs);
-
   const faqIcons = [FileText, Clock, Zap, ListChecks, HelpCircle, Lock];
 
+  // Toast auto-dismiss
   useEffect(() => {
     if (!toast) return;
     const id = setTimeout(() => setToast(null), 3000);
     return () => clearTimeout(id);
   }, [toast]);
 
+  // Celebration auto-dismiss
   useEffect(() => {
     if (!showCelebration) return;
     const id = setTimeout(() => setShowCelebration(false), 2000);
     return () => clearTimeout(id);
   }, [showCelebration]);
+
+  // Slow message — shows after 5s of loading to inform user of cold start
+  useEffect(() => {
+    if (!loading) {
+      setSlowMessage(false);
+      return;
+    }
+    const timer = setTimeout(() => setSlowMessage(true), 5000);
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -300,7 +312,24 @@ export default function TextSummarizerPage() {
               </section>
             )}
 
-            {error && (
+            {/* Rate limit info banner */}
+            {rateLimitInfo && (
+              <div className="mb-4 p-3 bg-orange-50 dark:bg-orange-900/20 border-2 border-orange-300 dark:border-orange-700 rounded-xl" role="alert">
+                <p className="text-sm font-semibold text-orange-700 dark:text-orange-300 flex items-start gap-2">
+                  <span aria-hidden="true">⏳</span>
+                  <span>
+                    {rateLimitInfo.message}
+                    {rateLimitInfo.resetIn > 0 && (
+                      <span className="block mt-1 text-xs font-bold">
+                        Try again in {rateLimitInfo.resetIn} minute{rateLimitInfo.resetIn !== 1 ? "s" : ""}.
+                      </span>
+                    )}
+                  </span>
+                </p>
+              </div>
+            )}
+
+            {error && !rateLimitInfo && (
               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-700 rounded-xl" role="alert">
                 <p className="text-sm font-semibold text-red-700 dark:text-red-300 flex items-start gap-2">
                   <span aria-hidden="true">❌</span>
@@ -321,7 +350,8 @@ export default function TextSummarizerPage() {
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <span className="animate-spin" aria-hidden="true">⚙️</span> Processing Magic...
+                  <span className="animate-spin" aria-hidden="true">⚙️</span>
+                  {slowMessage ? "Model waking up, please wait..." : "Processing Magic..."}
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
