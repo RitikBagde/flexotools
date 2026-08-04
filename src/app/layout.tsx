@@ -78,22 +78,6 @@ export default function RootLayout({
         <meta name="theme-color" content="#8B5CF6" />
         <meta name="google-adsense-account" content="ca-pub-4351431127336052" />
 
-        <Script id="consent-mode-defaults" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            
-            // Set all to denied by default — nothing tracked until user accepts
-            gtag('consent', 'default', {
-              analytics_storage: 'denied',
-              ad_storage: 'denied',
-              ad_user_data: 'denied',
-              ad_personalization: 'denied',
-              wait_for_update: 500,
-            });
-          `}
-        </Script>
-
         {/* GA4 — loads after consent defaults are set */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-K27HGVPP9G"
@@ -158,10 +142,27 @@ export default function RootLayout({
             }),
           }}
         />
-        <script src="https://pl30687712.effectivecpmnetwork.com/62/ba/e7/62bae7e1b3cf6b55dc85ab6add9a1824.js"></script>
+        <script async src="https://pl30687712.effectivecpmnetwork.com/62/ba/e7/62bae7e1b3cf6b55dc85ab6add9a1824.js"></script>
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* Consent defaults — must be beforeInteractive and OUTSIDE <head> */}
+        <Script id="consent-mode-defaults" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            
+            // Set all to denied by default — nothing tracked until user accepts
+            gtag('consent', 'default', {
+              analytics_storage: 'denied',
+              ad_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
+              wait_for_update: 500,
+            });
+          `}
+        </Script>
+
         {/* Animated Background */}
         <div className="fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
           <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
