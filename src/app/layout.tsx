@@ -158,6 +158,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <script src="https://pl30687712.effectivecpmnetwork.com/62/ba/e7/62bae7e1b3cf6b55dc85ab6add9a1824.js"></script>
       </head>
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
